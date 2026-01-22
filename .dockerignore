@@ -1,0 +1,66 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+package-lock.json
+
+# Build artifacts
+dist
+build
+.vite
+*.local
+
+# Environment and configuration
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE and editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing
+coverage
+.nyc_output
+
+# Python (for Lambda functions)
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Documentation
+*.md
+docs/
+images/
+
+# AWS and deployment
+template.yaml
+*.yaml
+*.yml
+lambdas/
+layers/
+
+# Misc
+*.bak
+*.tmp
+.agents
