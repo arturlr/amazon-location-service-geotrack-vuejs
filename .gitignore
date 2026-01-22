@@ -24,3 +24,7 @@ samconfig.toml
 queries.txt
 .env*
 .aws-sam
+__pycache__/
+*.pyc
+*.pyo
+*.log
