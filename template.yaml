@@ -7,7 +7,7 @@ Globals:
     AutoPublishAlias: live
     Handler: index.handler
     MemorySize: 256
-    Runtime: python3.10
+    Runtime: python3.13
     Timeout: 120
     Tracing: Active    
   
@@ -434,10 +434,10 @@ Resources:
       Description: requests
       ContentUri: ./layers/requests
       CompatibleRuntimes:
-        - python3.10
+        - python3.13
       RetentionPolicy: Delete
     Metadata:
-      BuildMethod: python3.10
+      BuildMethod: python3.13
 
   LaunchDeliveryFleet:
     Type: AWS::Serverless::Function 
