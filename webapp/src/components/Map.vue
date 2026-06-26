@@ -37,6 +37,8 @@ const locationClient = async () => {
   return client;
 };
 
+const emit = defineEmits(['point-selected'])
+
 const props = defineProps({
   action: {
     type: String,
@@ -56,6 +58,8 @@ const map = reactive({
 const showSummary = ref(false);
 const posInterval = ref(null);
 const popUps = ref({})
+const startMarker = ref(null);
+const endMarker = ref(null);
 
 onMounted(async () => {
   await initMap();
@@ -82,12 +86,30 @@ function flyToMap(position, color = null) {
 };
 
 watch(depCoord, (newPosition) => {
-  flyToMap(newPosition)
+  if (newPosition && newPosition.lng !== undefined) {
+    if (startMarker.value) startMarker.value.remove();
+    startMarker.value = new maplibregl.Marker({ color: "#2e7d32" }).setLngLat(newPosition).addTo(map.map);
+    map.map.flyTo({
+      center: [newPosition.lng, newPosition.lat],
+      essential: true,
+      zoom: 14,
+    });
+  }
 });
 
 watch(destCoord, (newPosition) => {
-  flyToMap(newPosition, "#a34a07")
-  showGeoFence(geoStore.calculateGeoFence([newPosition.lng, newPosition.lat]));
+  if (newPosition && newPosition.lng !== undefined) {
+    if (endMarker.value) endMarker.value.remove();
+    endMarker.value = new maplibregl.Marker({ color: "#c62828" }).setLngLat(newPosition).addTo(map.map);
+    map.map.flyTo({
+      center: [newPosition.lng, newPosition.lat],
+      essential: true,
+      zoom: 14,
+    });
+    if (props.action !== "point_select") {
+      showGeoFence(geoStore.calculateGeoFence([newPosition.lng, newPosition.lat]));
+    }
+  }
 });
 
 // watch(geoFencePolygon, (newGeoFencePolygon) => {
@@ -339,6 +361,13 @@ async function initMap() {
     });
 
     map.map.on('load', async function () {
+      if (props.action && props.action === "point_select") {
+        map.map.getCanvas().style.cursor = 'crosshair';
+        map.map.on('click', function (e) {
+          emit('point-selected', e.lngLat);
+        });
+      }
+
       if (props.action && props.action === "show_route") {
         let route = await geoStore.calculateRoute(props.routeParams.geoStart, props.routeParams.geoEnd)
         const markerDep = new maplibregl.Marker().setLngLat(props.routeParams.geoStart).addTo(map.map);
