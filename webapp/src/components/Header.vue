@@ -99,6 +99,14 @@ async function simulate() {
           </template>
         </v-tooltip>
 
+        <v-tooltip text="Route Planner" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="$router.push('/route-planner')">
+              <v-icon>mdi-map-marker-distance</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+
         <v-tooltip text="Simulate" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" color="orange" icon @click="buttonSimulate = true">
